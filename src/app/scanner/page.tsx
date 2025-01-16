@@ -11,6 +11,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
+import { useRouter } from "next/navigation";
 
 const scannerStyles = `
   #reader__scan_region > img {
@@ -47,6 +48,7 @@ const ScannerPage = () => {
   const [result, setResult] = useState("");
   const [manualRoll, setManualRoll] = useState("");
   const [isScanning, setIsScanning] = useState(true);
+  const router = useRouter();
 
   useEffect(() => {
     // Add custom styles
@@ -72,6 +74,7 @@ const ScannerPage = () => {
     scanner.render(
       (decodedText) => {
         setResult(decodedText);
+        handleSubmit(decodedText);
         setIsScanning(false);
         scanner.pause();
       },
@@ -89,6 +92,11 @@ const ScannerPage = () => {
   const handleManualSubmit = () => {
     setResult(manualRoll);
     setIsScanning(false);
+    handleSubmit(manualRoll);
+  };
+
+  const handleSubmit = (roll: string) => {
+    router.push(`/details/${roll}`);
   };
 
   return (
