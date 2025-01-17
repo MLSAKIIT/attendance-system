@@ -9,10 +9,6 @@
     "start": "next start",
     "lint": "next lint"
   },
-  "overrides": {
-    "react": "$react",
-    "react-dom": "$react-dom"
-  },
   "dependencies": {
     "@prisma/client": "^6.2.1",
     "@radix-ui/react-dialog": "^1.1.4",
