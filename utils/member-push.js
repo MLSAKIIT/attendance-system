@@ -28,7 +28,7 @@ export async function pushMembersFromCSV(filepath) {
   }
 
   try {
-    const result = await prisma.members.createMany({
+    const result = await prisma.user.createMany({
       data: records,
       skipDuplicates: true,
     });
