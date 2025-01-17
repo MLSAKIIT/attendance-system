@@ -91,18 +91,18 @@ export function LoginForm() {
         <div className="w-full max-w-sm space-y-6">
           {!showOTP ? (
             <>
-              <div className="text-center">
+              <div className="flex justify-center items-center">
                 <h1
-                  className={`text-4xl md:text-5xl font-thin text-indigo-300 ${styles.animatedText} ${styles.noWrapText}`}
+                  className={`text-4xl md:text-7xl font-thin text-indigo-300 ${styles.animatedText} ${styles.noWrapText}`}
                 >
                   Welcome {currentText}
                 </h1>
               </div>
               <div className="space-y-2 text-center">
-                <h1 className="text-xl md:text-2xl font-semibold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-white to-purple-400">
+                <h1 className="text-xl md:text-3xl font-semibold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-white to-purple-400">
                   Enter your email
                 </h1>
-                <p className="text-sm text-muted-foreground">
+                <p className="text-lg text-muted-foreground">
                   We&apos;ll send you a verification code
                 </p>
               </div>
