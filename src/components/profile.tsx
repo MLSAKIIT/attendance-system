@@ -1,4 +1,7 @@
+"use client";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Checkbox } from "@/components/ui/checkbox";
+import { useState } from "react";
 
 interface Responses {
   [question: string]: string;
@@ -20,6 +23,8 @@ interface ProfileGridProps {
 }
 
 export default function ProfileGrid(props: ProfileGridProps) {
+  const [isPresent, setIsPresent] = useState(false); // Add this line
+
   return (
     <div className="container mx-auto p-4">
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -39,6 +44,14 @@ export default function ProfileGrid(props: ProfileGridProps) {
             <p className="text-sm text-muted-foreground">
               Phone: {props["Phone Number"]}
             </p>
+            <div className="flex items-center space-x-2 pt-4">
+              <Checkbox
+                id="attendance"
+                checked={isPresent}
+                onCheckedChange={(checked) => setIsPresent(checked as boolean)}
+              />
+              <label htmlFor="attendance">Mark Attendance</label>
+            </div>
           </CardContent>
         </Card>
 
