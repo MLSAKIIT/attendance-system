@@ -28,7 +28,7 @@ export default function ProfileGrid(props: ProfileGridProps) {
 
   const handleAttendance = async (attendance: boolean) => {
     const data = await setAttendance(props["Roll Number"]);
-    if (data.success) {
+    if (data) {
       setIsPresent(attendance);
     }
   };

@@ -11,9 +11,16 @@ export async function setAttendance(roll: string) {
         "X-API-Key": process.env.BACKED_API_KEY!,
       },
     });
-    const data = await response.json();
-    console.log(data);
-    return data;
+    // NOTE: uncomment code to check for types :)
+    // const data = await response.json();
+    // console.log(data);
+    // return data;
+
+    // just checking for 200 status code
+    if (!response.ok) {
+      return false;
+    }
+    return true;
   } catch (error) {
     console.error(error);
     return null;
