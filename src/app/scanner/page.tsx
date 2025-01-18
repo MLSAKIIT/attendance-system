@@ -1,7 +1,7 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { Html5QrcodeScanner } from "html5-qrcode";
+import { useState, useEffect } from "react";
+import { BrowserMultiFormatReader } from "@zxing/library";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -13,76 +13,6 @@ import {
 import { Input } from "@/components/ui/input";
 import { useRouter } from "next/navigation";
 
-const scannerStyles = `
-  #reader {
-    border: none !important;
-    padding: 0 !important;
-    background: hsl(var(--background)) !important;
-  }
-  
-  #reader__scan_region {
-    min-height: 300px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: hsl(var(--muted)) !important;
-    border-radius: var(--radius);
-  }
-  
-  #reader__scan_region > img {
-    display: none;
-  }
-  
-  #reader__dashboard_section_swaplink {
-    display: none;
-  }
-  
-  #reader__camera_selection {
-    width: 100%;
-    margin-bottom: 8px;
-    background-color: hsl(var(--background));
-    color: hsl(var(--foreground));
-    border: 1px solid hsl(var(--border));
-    border-radius: var(--radius);
-    padding: 0.5rem;
-    font-size: 14px;
-  }
-  
-  #reader__dashboard_section_csr {
-    margin-bottom: 1rem;
-  }
-  
-  #reader__dashboard_section_csr > span {
-    color: hsl(var(--muted-foreground));
-    font-size: 14px;
-  }
-  
-  #reader__dashboard_section_csr button {
-    padding: 8px 16px;
-    background-color: hsl(var(--primary));
-    color: hsl(var(--primary-foreground));
-    border-radius: var(--radius);
-    border: none;
-    cursor: pointer;
-    font-size: 14px;
-    transition: opacity 0.2s;
-  }
-  
-  #reader__dashboard_section_csr button:hover {
-    opacity: 0.9;
-  }
-  
-  #reader__status_span {
-    color: hsl(var(--muted-foreground));
-    font-size: 14px;
-  }
-  
-  #html5-qrcode-anchor-scan-type-change {
-    color: hsl(var(--primary));
-    text-decoration: none;
-  }
-`;
-
 const ScannerPage = () => {
   const [result, setResult] = useState("");
   const [manualRoll, setManualRoll] = useState("");
@@ -90,43 +20,41 @@ const ScannerPage = () => {
   const router = useRouter();
 
   useEffect(() => {
-    // Add custom styles
-    const style = document.createElement("style");
-    style.innerHTML = scannerStyles;
-    document.head.appendChild(style);
+    if (isScanning) {
+      const codeReader = new BrowserMultiFormatReader();
 
-    const scanner = new Html5QrcodeScanner(
-      "reader",
-      {
-        qrbox: {
-          width: 250,
-          height: 250,
-        },
-        fps: 10,
-        rememberLastUsedCamera: true,
-        aspectRatio: 1,
-        showTorchButtonIfSupported: true,
-      },
-      false
-    );
+      const startScanning = async () => {
+        try {
+          const videoElement = document.getElementById(
+            "video"
+          ) as HTMLVideoElement;
+          await codeReader.decodeFromVideoDevice(
+            null,
+            videoElement,
+            (result, err) => {
+              if (result) {
+                console.log("Scanned:", result.getText()); // Debug log
+                setResult(result.getText());
+                setIsScanning(false);
+                handleSubmit(result.getText());
+                codeReader.reset();
+              }
+              if (err && !(err instanceof TypeError)) {
+                console.error("Scan error:", err);
+              }
+            }
+          );
+        } catch (err) {
+          console.error("Error starting scanner:", err);
+        }
+      };
 
-    scanner.render(
-      (decodedText) => {
-        setResult(decodedText);
-        handleSubmit(decodedText);
-        setIsScanning(false);
-        scanner.pause();
-      },
-      (error) => {
-        console.warn(error);
-      }
-    );
-
-    return () => {
-      scanner.clear();
-      document.head.removeChild(style);
-    };
-  }, []);
+      startScanning();
+      return () => {
+        codeReader.reset();
+      };
+    }
+  }, [isScanning]);
 
   const handleManualSubmit = () => {
     setResult(manualRoll);
@@ -143,12 +71,12 @@ const ScannerPage = () => {
       <div className="w-full max-w-md space-y-4">
         <div className="rounded-lg bg-card p-6 shadow-lg">
           <h1 className="mb-6 text-center text-2xl font-bold text-foreground">
-            {isScanning ? "Scan QR Code" : "Scan Complete"}
+            {isScanning ? "Scan Code" : "Scan Complete"}
           </h1>
 
           {isScanning ? (
             <div className="overflow-hidden rounded-lg border border-border bg-card">
-              <div id="reader" className="w-full"></div>
+              <video id="video" style={{ width: "100%", height: "100%" }} />
             </div>
           ) : (
             <div className="space-y-4 text-center">

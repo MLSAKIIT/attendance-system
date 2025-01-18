@@ -1,4 +1,5 @@
 "use client";
+import { setAttendance } from "@/action/set-attendance";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Checkbox } from "@/components/ui/checkbox";
 import { useState } from "react";
@@ -23,7 +24,14 @@ interface ProfileGridProps {
 }
 
 export default function ProfileGrid(props: ProfileGridProps) {
-  const [isPresent, setIsPresent] = useState(false); // Add this line
+  const [isPresent, setIsPresent] = useState(false);
+
+  const handleAttendance = async (attendance: boolean) => {
+    const data = await setAttendance(props["Roll Number"]);
+    if (data.success) {
+      setIsPresent(attendance);
+    }
+  };
 
   return (
     <div className="container mx-auto p-4">
@@ -48,7 +56,9 @@ export default function ProfileGrid(props: ProfileGridProps) {
               <Checkbox
                 id="attendance"
                 checked={isPresent}
-                onCheckedChange={(checked) => setIsPresent(checked as boolean)}
+                onCheckedChange={(checked) =>
+                  handleAttendance(checked as boolean)
+                }
               />
               <label htmlFor="attendance">Mark Attendance</label>
             </div>
