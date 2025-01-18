@@ -1,5 +1,5 @@
 import { getUserDetails } from "@/action/get-profile";
-import BentoGrid from "@/components/profile";
+import ProfileGrid from "@/components/profile";
 import Link from "next/link";
 
 export default async function Page({
@@ -38,7 +38,7 @@ export default async function Page({
       >
         Return to Scanner
       </Link>
-      <BentoGrid {...data} />
+      <ProfileGrid {...data} />
     </div>
   );
 }
