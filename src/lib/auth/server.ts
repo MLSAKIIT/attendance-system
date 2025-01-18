@@ -6,6 +6,7 @@ import { emailOTP } from "better-auth/plugins";
 import { sendOtp } from "../email";
 
 export const auth = betterAuth({
+  trustedOrigins: process.env.TRUSTED_ORIGINS!.split(","),
   database: prismaAdapter(prisma, {
     provider: "postgresql",
   }),

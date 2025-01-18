@@ -33,7 +33,7 @@ export default async function Page({
   return (
     <div className="container mx-auto p-4">
       <Link
-        href="/"
+        href="/scanner"
         className="inline-block mb-4 px-6 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors"
       >
         Return to Scanner
