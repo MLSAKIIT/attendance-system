@@ -22,6 +22,7 @@ export function LoginForm() {
   const [error, setError] = useState<string | undefined>(undefined);
   const [currentTextIndex, setCurrentTextIndex] = useState(0);
   const [isAnimating, setIsAnimating] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
 
   const MlsaTexts = ["Student", "Developer", "Leader", "Innovator"];
@@ -32,13 +33,14 @@ export function LoginForm() {
       setTimeout(() => {
         setCurrentTextIndex((prevIndex) => (prevIndex + 1) % MlsaTexts.length);
         setIsAnimating(true);
-      }, 200); // Short delay before showing the next word
-    }, 4000); // Change text every 4 seconds
+      }, 200);
+    }, 4000);
 
     return () => clearInterval(interval);
   }, [MlsaTexts.length]);
 
   const handleSendOTP = async () => {
+    setIsLoading(true); // Add this line
     const res = await authClient.emailOtp.sendVerificationOtp({
       type: "sign-in",
       email: email,
@@ -46,22 +48,27 @@ export function LoginForm() {
 
     if (res.error) {
       setError(res.error.message);
+      setIsLoading(false); // Add this line
       return;
     }
     setShowOTP(true);
     setError(undefined);
+    setIsLoading(false); // Add this line
   };
 
   const handleSubmitOTP = async () => {
+    setIsLoading(true); // Add this line
     const res = await authClient.signIn.emailOtp({
       email: email,
       otp: otp,
     });
     if (res.error) {
       setError(res.error.message);
+      setIsLoading(false); // Add this line
       return;
     }
     setError(undefined);
+    setIsLoading(false); // Add this line
     router.push("/scanner");
   };
 
@@ -119,8 +126,9 @@ export function LoginForm() {
               <Button
                 className="w-full bg-gradient-to-r from-blue-800 to-primary"
                 onClick={handleSendOTP}
+                disabled={isLoading}
               >
-                Send OTP
+                {isLoading ? "Sending..." : "Send OTP"}
               </Button>
             </>
           ) : (
@@ -157,8 +165,9 @@ export function LoginForm() {
               <Button
                 className="w-full bg-gradient-to-r from-blue-800 to-primary"
                 onClick={handleSubmitOTP}
+                disabled={isLoading}
               >
-                Verify
+                {isLoading ? "Verifying..." : "Verify"}
               </Button>
             </>
           )}
