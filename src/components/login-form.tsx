@@ -11,7 +11,7 @@ import {
 import { authClient } from "@/lib/auth/client";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { useState, useMemo, useEffect } from "react";
+import { useState, useEffect } from "react";
 import styles from "@/components/Welcome.module.css";
 import BgVectors from "./BgVectors";
 
@@ -20,25 +20,23 @@ export function LoginForm() {
   const [email, setEmail] = useState("");
   const [otp, setOtp] = useState("");
   const [error, setError] = useState<string | undefined>(undefined);
-  const MlsaTexts = useMemo(
-    () => ["Student", "Developer", "Leader", "Student"],
-    []
-  );
-  const [currentText, setCurrentText] = useState(MlsaTexts[0]);
+  const [currentTextIndex, setCurrentTextIndex] = useState(0);
+  const [isAnimating, setIsAnimating] = useState(true);
   const router = useRouter();
 
+  const MlsaTexts = ["Student", "Developer", "Leader", "Innovator"];
+
   useEffect(() => {
-    let index = 0;
     const interval = setInterval(() => {
-      index = (index + 1) % MlsaTexts.length;
-      setCurrentText(MlsaTexts[index]);
-    }, 2000);
-    return () => {
-      if (interval) {
-        clearInterval(interval);
-      }
-    };
-  }, [MlsaTexts]);
+      setIsAnimating(false);
+      setTimeout(() => {
+        setCurrentTextIndex((prevIndex) => (prevIndex + 1) % MlsaTexts.length);
+        setIsAnimating(true);
+      }, 200); // Short delay before showing the next word
+    }, 4000); // Change text every 4 seconds
+
+    return () => clearInterval(interval);
+  }, [MlsaTexts.length]);
 
   const handleSendOTP = async () => {
     const res = await authClient.emailOtp.sendVerificationOtp({
@@ -84,18 +82,22 @@ export function LoginForm() {
           Members Login
         </span>
       </nav>
-      {/* bg vectors  */}
 
       <BgVectors />
+
       <main className="flex min-h-screen flex-col items-center justify-center p-4">
         <div className="w-full max-w-sm space-y-6">
           {!showOTP ? (
             <>
-              <div className="flex justify-center items-center">
+              <div className="flex justify-center items-center h-20">
+                {" "}
+                {/* Fixed height container */}
                 <h1
-                  className={`text-4xl md:text-7xl font-thin text-indigo-300 ${styles.animatedText} ${styles.noWrapText}`}
+                  className={`text-4xl md:text-7xl font-thin text-indigo-300 ${
+                    isAnimating ? styles.animatedText : "opacity-0"
+                  } ${styles.noWrapText}`}
                 >
-                  Welcome {currentText}
+                  Welcome {MlsaTexts[currentTextIndex]}
                 </h1>
               </div>
               <div className="space-y-2 text-center">
