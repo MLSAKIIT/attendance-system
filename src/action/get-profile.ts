@@ -2,6 +2,7 @@
 
 export async function getUserDetails(roll: string) {
   const url = `${process.env.BACKED_URL}/search?roll=${roll}`;
+  console.log(url);
 
   try {
     const response = await fetch(url, {

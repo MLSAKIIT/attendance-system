@@ -14,33 +14,72 @@ import { Input } from "@/components/ui/input";
 import { useRouter } from "next/navigation";
 
 const scannerStyles = `
-  #reader__scan_region > img {
-    display: none;
+  #reader {
+    border: none !important;
+    padding: 0 !important;
+    background: hsl(var(--background)) !important;
   }
+  
   #reader__scan_region {
     min-height: 300px;
     display: flex;
     align-items: center;
     justify-content: center;
+    background: hsl(var(--muted)) !important;
+    border-radius: var(--radius);
   }
+  
+  #reader__scan_region > img {
+    display: none;
+  }
+  
   #reader__dashboard_section_swaplink {
     display: none;
   }
-  #reader {
-    border: none !important;
-    padding: 0 !important;
-  }
+  
   #reader__camera_selection {
     width: 100%;
     margin-bottom: 8px;
+    background-color: hsl(var(--background));
+    color: hsl(var(--foreground));
+    border: 1px solid hsl(var(--border));
+    border-radius: var(--radius);
+    padding: 0.5rem;
+    font-size: 14px;
   }
+  
+  #reader__dashboard_section_csr {
+    margin-bottom: 1rem;
+  }
+  
+  #reader__dashboard_section_csr > span {
+    color: hsl(var(--muted-foreground));
+    font-size: 14px;
+  }
+  
   #reader__dashboard_section_csr button {
     padding: 8px 16px;
-    background-color: #7c3aed;
-    color: white;
-    border-radius: 6px;
+    background-color: hsl(var(--primary));
+    color: hsl(var(--primary-foreground));
+    border-radius: var(--radius);
     border: none;
     cursor: pointer;
+    font-size: 14px;
+    transition: opacity 0.2s;
+  }
+  
+  #reader__dashboard_section_csr button:hover {
+    opacity: 0.9;
+  }
+  
+  #reader__status_span {
+    color: hsl(var(--muted-foreground));
+    font-size: 14px;
+  }
+  
+  #html5-qrcode-anchor-scan-type-change {
+    color: hsl(var(--primary));
+    text-decoration: none;
   }
 `;
 
@@ -100,29 +139,29 @@ const ScannerPage = () => {
   };
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-purple-50 p-4">
+    <div className="flex min-h-screen items-center justify-center bg-background p-4">
       <div className="w-full max-w-md space-y-4">
-        <div className="rounded-lg bg-white p-6 shadow-lg">
-          <h1 className="mb-6 text-center text-2xl font-bold text-purple-800">
+        <div className="rounded-lg bg-card p-6 shadow-lg">
+          <h1 className="mb-6 text-center text-2xl font-bold text-foreground">
             {isScanning ? "Scan QR Code" : "Scan Complete"}
           </h1>
 
           {isScanning ? (
-            <div className="overflow-hidden rounded-lg border-2 border-purple-300 bg-white">
+            <div className="overflow-hidden rounded-lg border border-border bg-card">
               <div id="reader" className="w-full"></div>
             </div>
           ) : (
             <div className="space-y-4 text-center">
-              <div className="rounded-lg bg-purple-100 p-4 text-purple-800">
+              <div className="rounded-lg bg-muted p-4 text-foreground">
                 <p className="font-semibold">Scanned Successfully</p>
-                <p className="mt-2 text-sm">{result}</p>
+                <p className="mt-2 text-sm text-muted-foreground">{result}</p>
               </div>
               <Button
                 onClick={() => {
                   setIsScanning(true);
                   setResult("");
                 }}
-                className="w-full "
+                className="w-full"
               >
                 Scan Again
               </Button>
@@ -131,10 +170,7 @@ const ScannerPage = () => {
 
           <Dialog>
             <DialogTrigger asChild>
-              <Button
-                variant="outline"
-                className="mt-4 w-full border-purple-200 hover:bg-purple-50"
-              >
+              <Button variant="outline" className="mt-4 w-full">
                 Enter Roll Number Manually
               </Button>
             </DialogTrigger>
@@ -148,7 +184,7 @@ const ScannerPage = () => {
                   value={manualRoll}
                   onChange={(e) => setManualRoll(e.target.value)}
                 />
-                <Button onClick={handleManualSubmit} className="w-full ">
+                <Button onClick={handleManualSubmit} className="w-full">
                   Submit
                 </Button>
               </div>

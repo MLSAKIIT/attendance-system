@@ -78,7 +78,7 @@ export function LoginForm() {
             className="h-[35px] w-[140px] md:h-[40px] md:w-[160px] lg:h-[50px] lg:w-[197px]"
           />
         </div>
-        <span className="absolute left-1/2 transform -translate-x-1/2 text-xl md:text-2xl font-semibold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-white to-purple-400">
+        <span className="absolute left-1/2 transform -translate-x-1/2 text-xl md:text-2xl font-semibold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-blue-800 to-primary">
           Members Login
         </span>
       </nav>
@@ -101,7 +101,7 @@ export function LoginForm() {
                 </h1>
               </div>
               <div className="space-y-2 text-center">
-                <h1 className="text-xl md:text-3xl font-semibold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-white to-purple-400">
+                <h1 className="text-xl md:text-3xl font-semibold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-blue-800 to-primary">
                   Enter your email
                 </h1>
                 <p className="text-lg text-muted-foreground">
@@ -117,7 +117,7 @@ export function LoginForm() {
               />
               {error && <p className="text-red-500 text-sm">{error}</p>}
               <Button
-                className="w-full bg-gradient-to-r from-gray-400 to-purple-900"
+                className="w-full bg-gradient-to-r from-blue-800 to-primary"
                 onClick={handleSendOTP}
               >
                 Send OTP
@@ -126,7 +126,7 @@ export function LoginForm() {
           ) : (
             <>
               <div className="space-y-2 text-center">
-                <h1 className="text-xl md:text-2xl font-semibold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-white to-purple-400">
+                <h1 className="text-xl md:text-2xl font-semibold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-blue-800 to-primary">
                   Enter your OTP
                 </h1>
                 <p className="text-sm text-muted-foreground">
@@ -155,7 +155,7 @@ export function LoginForm() {
               </div>
               {error && <p className="text-red-500 text-sm">{error}</p>}
               <Button
-                className="w-full bg-gradient-to-r from-gray-400 to-purple-900"
+                className="w-full bg-gradient-to-r from-blue-800 to-primary"
                 onClick={handleSubmitOTP}
               >
                 Verify
