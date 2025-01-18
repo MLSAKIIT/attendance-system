@@ -1,7 +1,7 @@
 import { NextResponse, type NextRequest } from "next/server";
 
 export default async function authMiddleware(request: NextRequest) {
-  const url = new URL("/api/auth/get-session", request.nextUrl.origin);
+  const url = new URL("/api/auth/get-session", process.env.BETTER_AUTH_URL);
   const req = await fetch(url, {
     headers: {
       cookie: request.headers.get("cookie") || "",
