@@ -4,7 +4,7 @@ interface Responses {
   [question: string]: string;
 }
 
-interface BentoGridProps {
+interface ProfileGridProps {
   uuid: string;
   "Roll Number": string;
   "Full Name": string;
@@ -19,7 +19,7 @@ interface BentoGridProps {
   "MLSA Opinion": string;
 }
 
-export default function BentoGrid(props: BentoGridProps) {
+export default function ProfileGrid(props: ProfileGridProps) {
   return (
     <div className="container mx-auto p-4">
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -92,8 +92,8 @@ export default function BentoGrid(props: BentoGridProps) {
             <CardTitle>Responses</CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
-            {Object.entries(props.Responses).map(([question, answer]) => (
-              <div>
+            {Object.entries(props.Responses).map(([question, answer], idx) => (
+              <div key={idx}>
                 <p className="font-semibold mb-2">{question}</p>
                 <p className="text-muted-foreground">{answer}</p>
               </div>

@@ -1,4 +1,5 @@
 import { getUserDetails } from "@/action/get-profile";
+import ProfileGrid from "@/components/profile";
 
 export default async function Page({
   params,
@@ -10,5 +11,5 @@ export default async function Page({
   if (!data) {
     return <div>Data Not Found. Maybe </div>;
   }
-  return <div>My Post: {id}</div>;
+  return <ProfileGrid {...data} />;
 }
